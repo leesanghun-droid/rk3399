@@ -119,7 +119,7 @@
 
 		ports {
 			panel_in: endpoint {
-				remote-endpoint = <&edp_out>;
+				//remote-endpoint = <&edp_out>;
 			};
 		};
 	};
@@ -143,7 +143,7 @@
 };
 
 &edp {
-	status = "okay";
+	status = "disabled";
 	force-hpd;
 
 	ports {
@@ -207,6 +207,46 @@
 		port {
 			ucam_out0: endpoint {
 				remote-endpoint = <&mipi_in_ucam0>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
+};
+
+
+&i2c4 {
+	status = "okay";
+
+	vm149c_2: vm149c_2@0c {
+		compatible = "silicon touch,vm149c";
+		status = "okay";
+		reg = <0x0c>;
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+	};
+
+	ov13850_2: ov13850_2@10 {
+		compatible = "ovti,ov13850";
+		status = "okay";
+		reg = <0x10>;
+		clocks = <&cru SCLK_CIF_OUT>;
+		clock-names = "xvclk";
+
+		/* conflict with csi-ctl-gpios */
+		reset-gpios = <&gpio0 RK_PA1 GPIO_ACTIVE_HIGH>;
+		pwdn-gpios = <&gpio1 RK_PA4 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "rockchip,camera_default";
+		pinctrl-0 = <&cif_clkout>;
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "CMK-CT0116";
+		rockchip,camera-module-lens-name = "Largan-50013A1";
+
+		lens-focus = <&vm149c_2>;
+
+		port {
+			ucam_out1: endpoint {
+				remote-endpoint = <&mipi_in_ucam1>;
 				data-lanes = <1 2>;
 			};
 		};
@@ -287,7 +327,7 @@
 			mipi_in_ucam1: endpoint@1 {
 				reg = <1>;
 				/* Unlinked camera */
-				//remote-endpoint = <&ucam_out1>;
+				remote-endpoint = <&ucam_out1>;
 				data-lanes = <1 2>;
 			};
 		};
@@ -338,7 +378,7 @@
 };
 
 &route_edp {
-	status = "okay";
+	status = "disabled";
 };
 
 /*

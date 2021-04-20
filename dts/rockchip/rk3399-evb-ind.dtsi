@@ -115,7 +115,7 @@
 	wireless-wlan {
 		compatible = "wlan-platdata";
 		rockchip,grf = <&grf>;
-		wifi_chip_type = "ap6354";
+		wifi_chip_type = "ap6255";
 		sdio_vref = <1800>;
 		WIFI,host_wake_irq = <&gpio0 3 GPIO_ACTIVE_HIGH>; /* GPIO0_a3 */
 		status = "okay";
@@ -1134,9 +1134,14 @@
 	pinctrl-0 = <&uart0_xfer &uart0_cts>;
 	status = "okay";
 };
-
-&uart2 {
+&uart1 {
 	status = "disabled";
+};
+&uart3 {
+	status = "disabled";
+};
+&uart4 {
+	status = "okay";
 };
 
 &u2phy0 {
